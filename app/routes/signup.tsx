@@ -41,12 +41,21 @@ export const action = async ({ request }: DataFunctionArgs) => {
     return validationError(result.error, data);
   }
 
+  // TODO: check if user already exists
+  // const user = await createUser(email, password);
+
+  // return createUserSession({
+  //   redirectTo,
+  //   remember: false,
+  //   request,
+  //   userId: user.id,
+  // });
+
   return redirect("/");
 };
 
 export default function SignUp() {
   const data = useActionData();
-  console.log({ data });
 
   return (
     <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">

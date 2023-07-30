@@ -1,6 +1,13 @@
 import { LoaderArgs, json } from "@remix-run/node";
-import { Form, Link, Outlet, V2_MetaFunction } from "@remix-run/react";
+import {
+  Form,
+  Link,
+  Outlet,
+  V2_MetaFunction,
+  useLoaderData,
+} from "@remix-run/react";
 
+import { getUserPoems } from "~/models/user.server";
 import { requireUserId } from "~/session.server";
 import { useUser } from "~/utils";
 
@@ -10,13 +17,24 @@ export const meta: V2_MetaFunction = () => {
 
 export const loader = async ({ request }: LoaderArgs) => {
   const userId = await requireUserId(request);
-  return json({});
+  const poems = await getUserPoems(userId);
+  return json({ poems });
 };
 
 export default function Index() {
+  const data = useLoaderData<typeof loader>();
   const user = useUser();
+
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
+      {data.poems.map((poem) => {
+        return (
+          <div key={poem.id}>
+            {poem.title}
+            {poem.body?.toString()}
+          </div>
+        );
+      })}
       <div>Home is {user.email}</div>
       <Form action="/logout" method="post">
         <button

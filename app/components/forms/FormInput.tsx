@@ -2,15 +2,16 @@ import React from "react";
 import { useField } from "remix-validated-form";
 
 export const FormInput = ({
-  name,
   label,
+  name,
   type = "text",
 }: {
   name: string;
   label: string;
-  type?: React.InputHTMLAttributes<HTMLInputElement>["type"];
+  type?: Exclude<React.InputHTMLAttributes<HTMLInputElement>["type"], "hidden">;
 }) => {
   const { error, getInputProps } = useField(name);
+
   return (
     <div>
       <label
@@ -27,4 +28,12 @@ export const FormInput = ({
       {error && <div className="mt-1 text-red-500 ">{error}</div>}
     </div>
   );
+};
+
+export const HiddenInput = (props: {
+  name: string;
+  type: "hidden";
+  value: string;
+}) => {
+  return <input {...props} />;
 };

@@ -13,8 +13,8 @@ export async function getUserByEmail(email: User["email"]) {
   return prisma.user.findUnique({ where: { email } });
 }
 
-export async function getUserPoems(email: User["email"]) {
-  return prisma.user.findUnique({ where: { email }, include: { Poems: true } });
+export async function getUserPoems(userId: User["id"]) {
+  return prisma.poem.findMany({ where: { userId } });
 }
 
 export async function createUser(email: User["email"], password: string) {
